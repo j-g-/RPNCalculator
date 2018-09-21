@@ -1,15 +1,16 @@
 Reverse Polish Notation (RPN) Calculator
 ========================================
-    - This program contains a command-line utility to operate RPN expressions.
-    ...For example:
-            ......1 1 5 PLUS PLUS =  7
-            ......9 2 7 PLUS TIMES = 81
 
-    - Can parse serveral lines from a file, or use an interactive mode to 
-    ... evaluate a line at the time.
+    * This program contains a command-line utility to operate RPN expressions.
+        For example:
+            1 1 5 PLUS PLUS =  7
+            9 2 7 PLUS TIMES = 81
 
-    - Keeps history of calculations and can print history sorted by result, 
-    ... result in reverse and date.
+    * Can parse serveral lines from a file, or use an interactive mode to 
+        evaluate a line at the time.
+
+    * Keeps history of calculations and can print history sorted by result, 
+        result in reverse and date.
 
 Usage
 -----
