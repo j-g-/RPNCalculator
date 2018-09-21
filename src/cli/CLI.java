@@ -23,6 +23,9 @@ public class CLI {
 	public static boolean interactiveMode = false;
 	public static String fileToParse = "normal";
 
+	/**
+	 * Initializes the interactive mode to read the standard input.
+	 */
 	private static void startInteractiveMode() {
 		String prompt = ">>> ";
 		Scanner sc = new Scanner(System.in);
@@ -58,20 +61,24 @@ public class CLI {
 		}
 	}
 
-	public static void parseArgs(String [] args){
+	/**
+	 * Command line arguments parser
+	 * @param args Arguments passed to the program.
+	 */
+	private static void parseArgs(String [] args){
 		if (args.length >  0){
 			for(String arg : args) {
 				if(arg.matches("-h|--help")) {
 					showHelp = true;
 				} else if(arg.matches("--history|-ho|--history=ord.*")) {
 					showHistory = true;
-					historyMode = "o";
+					historyMode = "o"; //ordered
 				} else if(arg.matches("-hr|--history=rev.*")) {
 					showHistory = true;
-					historyMode = "r";
+					historyMode = "r"; //reversed
 				} else if(arg.matches("-hd|--history=da.*")) {
 					showHistory = true;
-					historyMode = "d";
+					historyMode = "d";//date
 				} else {
 					 fileToParse = arg;
 					 parseFile   = true;
@@ -82,6 +89,9 @@ public class CLI {
 		}
 	}
 
+	/**
+	 * Prints the help for this program.
+	 */
 	private static void printHelp() {
 		String[][] commands = {
 			{"help", "Prints this help."},
@@ -138,8 +148,10 @@ public class CLI {
 		System.out.println(help);
 	}
 
-	public static void main(String[] args) {
-		parseArgs(args);
+	/**
+	 * Run using the parsed arguments.
+	 */
+	private static void run(){
 		if (interactiveMode){
 			startInteractiveMode();
 		} else {
@@ -165,7 +177,14 @@ public class CLI {
 				rpnc.processFile(fileToParse);
 			}
 		}
+	
 	}
-
-
+	/**
+	 * Main method.
+	 * @param args  Arguments.
+	 */
+	public static void main(String[] args) {
+		parseArgs(args);
+		run();
+	}
 }

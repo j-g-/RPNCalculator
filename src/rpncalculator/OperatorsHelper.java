@@ -6,15 +6,32 @@
 package rpncalculator;
 
 /**
- *
+ * Operators Helper class.
  * @author J. Garcia, jyo.garcia at gmail.com
  */
 public class OperatorsHelper {
+	/**
+	 * Addition instance.
+	 */
 	Operator addition = new Addition();
-	Operator substraction = new Substraction();
+	/**
+	 * Subtraction instance.
+	 */
+	Operator substraction = new Subtraction();
+	/**
+	 * Multiplication instance.
+	 */
 	Operator multiplication = new Multiplication();
+	/**
+	 * Division instance.
+	 */
 	Operator division = new Division();
 
+	/**
+	 * Get the instance for the String operator.
+	 * @param operator Oprerator string token.
+	 * @return  The operator instance.
+	 */
 	public Operator getOperator(String operator){
 		Operator op = null;
 		switch (operator) {

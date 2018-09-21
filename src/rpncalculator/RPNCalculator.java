@@ -7,45 +7,73 @@ package rpncalculator;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * Reverse Polish Notation calculator implementation.
+ * Singleton class.
  * @author J. Garcia, jyo.garcia at gmail.com
  */
 public class RPNCalculator {
+	/**
+	 * The only instance of RPNCalculator to be created.
+	 */
 	private static RPNCalculator firstInstance = null;
+	/**
+	 * Operators Helper instance.
+	 */
 	OperatorsHelper operatorsHelper = null;
+	/**
+	 * The history handler instance.
+	 */
 	CalculationsHistory calculationsHistory = null;
+	/**
+	 * The source of the RPN expressions.
+	 */
 	String input = "stdin";
 
+	/**
+	 * Get the CalculationsHistory instance.
+	 * @return The CalculationsHistory instance.
+	 */
 	public CalculationsHistory getCalculationsHistory() {
 		return calculationsHistory;
 	}
 
+	/**
+	 * Get the source of the RPN expressions.
+	 * @return  
+	 */
 	public String getInput() {
 		return input;
 	}
 
+	/**
+	 * Source of the RPN expressions.
+	 * @param input  The source of the RPN expressions.
+	 */
 	public void setInput(String input) {
 		this.input = input;
 	}
 
+	/**
+	 * Private Constructor.
+	 */
 	private RPNCalculator() {
 		operatorsHelper = new OperatorsHelper();
 		calculationsHistory = new CalculationsHistory();
 		calculationsHistory.loadHistory();
 	}
 
+	/**
+	 * Parsers and performs calculation for a line.
+	 * @param line Lie to parse
+	 * @return The Calculation results.
+	 */
 	public Calculation parseLine(String line){
 		String []tokens = line.split("\\s");
 		Stack<BigDecimal> numbers = new Stack<>();
@@ -93,6 +121,10 @@ public class RPNCalculator {
 		return c;
 	}
 
+	/**
+	 * Returns the only instance of RPNCalculator.
+	 * @return  The RPNCalculator instance used for this program.
+	 */
 	public static RPNCalculator getInstance(){
 		if (firstInstance == null){
 			firstInstance = new RPNCalculator();
@@ -100,6 +132,10 @@ public class RPNCalculator {
 		return  firstInstance;
 	}
 
+	/**
+	 * Process a file of RPN expresions.
+	 * @param fileName  The file to process.
+	 */
 	public void processFile (String fileName){
 		this.setInput(fileName);
 		try {
@@ -112,17 +148,4 @@ public class RPNCalculator {
 			System.err.println("Could not find file: "  + fileName);
 		}
 	}
-	
-	public static void main(String[] args) {
-		RPNCalculator rpnc = new RPNCalculator();
-		String line = "1 2 1 3 2 1 PLUS TIMES PLUS DIV PLUS PAPAS";
-		System.out.println(rpnc.parseLine(line));
-		line = "1 1 3 2 1 PLUS TIMES PLUS DIV ";
-		System.out.println(rpnc.parseLine(line));
-		line = "1 1 3 2 1 + * + /";
-		System.out.println(rpnc.parseLine(line));
-		line = "1 1 1 + PLUS PLUS";
-		System.out.println(rpnc.parseLine(line));
-	}
-	
 }

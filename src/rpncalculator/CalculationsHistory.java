@@ -5,7 +5,6 @@
  */
 package rpncalculator;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +21,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 /**
- *
+ * Hols the functionality related to the history of results.
  * @author J. Garcia, jyo.garcia at gmail.com
  */
 public class CalculationsHistory {
@@ -31,6 +30,11 @@ public class CalculationsHistory {
 	ArrayList<Calculation> calculationsSorted = null;
 	Path logFile = null;
 	String separator = ":::";
+	/**
+	 * Load the history.
+	 * Search for rpnc-history.log in current directory and user's home.
+	 * Creates file in current directory if it does not exists.
+	 */
 	public void loadHistory(){
 		String fileName = "rpnc-history.log";
 		Path wd = Paths.get(System.getProperty("user.dir"), fileName);
@@ -52,13 +56,27 @@ public class CalculationsHistory {
 		}
 	}
 
+	/**
+	 * BigDecimal comparator.
+	 * A comparator for BigDecimals.
+	 */
 	private class BigDecimalComparator implements Comparator<Calculation>{
 		private boolean reverse = false;
 
+		/**
+		 * Set the order to the reverse.
+		 * @param reverse  Set to true for reverse sorting.
+		 */
 		public void setReverse(boolean reverse) {
 			this.reverse = reverse;
 		}
 
+		/**
+		 * Compares the Result of two Calculation.
+		 * @param t The calculation a.
+		 * @param t1 The calculation b
+		 * @return 
+		 */
 		@Override
 		public int compare(Calculation t, Calculation t1) {
 			BigDecimal a = new BigDecimal(t.getResult());
@@ -70,12 +88,21 @@ public class CalculationsHistory {
 			return r ; 
 		}
 
+		/**
+		 * Get a reversed comparator.
+		 * @return A reverse comparator.
+		 */
 		@Override
 		public Comparator<Calculation> reversed() {
 			this.setReverse(true);
 			return this;
 		}
 	}
+
+	/**
+	 * Print history sorting the calculations by result
+	 * @param reverse  If set to true reverse order will be used.
+	 */
 	public void printOrderedByResult( boolean reverse){
 		calculationsSorted = new ArrayList<>();
 		for (Calculation calculation : calculations) {
@@ -93,6 +120,9 @@ public class CalculationsHistory {
 			System.out.println(cs.getResult()+" = " +cs.getOperation());
 		}
 	}
+	/**
+	 * Print ordered by the date of calculation.
+	 */
 	public void printOrderedByDate(){
 		calculationsSorted = (ArrayList)calculations.clone();
 		calculationsSorted.sort((t, t1) -> {
@@ -106,6 +136,11 @@ public class CalculationsHistory {
 	
 	}
 
+	/**
+	 * Parser a line.
+	 * @param line Line to parse.
+	 * @return  A Calculation object.
+	 */
 	private Calculation parseLine(String line){
 		String [] parts = line.split(this.separator);
 		String date = parts[0];
@@ -116,6 +151,10 @@ public class CalculationsHistory {
 		return new Calculation(result, operation, date, info, source);
 	}
 
+	/**
+	 * Load the history from fileName.
+	 * @param fileName The file to use for the history.
+	 */
 	private void loadFile(String fileName){
 		FileInputStream fis = null;
 		calculations = new ArrayList<>();
@@ -136,6 +175,10 @@ public class CalculationsHistory {
 		}
 	}
 
+	/**
+	 * Log calculation to log file.
+	 * @param c  Calculation to log.
+	 */
 	public void log( Calculation c ){
 		try {
 			String output = "";
