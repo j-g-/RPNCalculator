@@ -46,7 +46,7 @@ public class RPNCalculator {
 
 	/**
 	 * Get the source of the RPN expressions.
-	 * @return  
+	 * @return  The source of the RPN expressions.
 	 */
 	public String getInput() {
 		return input;

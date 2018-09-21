@@ -130,7 +130,7 @@ public class Calculation {
 
 	/**
 	 * Transform to a String.
-	 * @return 
+	 * @return  The String represenation of the Calculation.
 	 */
 	@Override
 	public String toString() {
