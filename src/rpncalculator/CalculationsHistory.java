@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rpncalculator;
 
 import java.io.FileInputStream;
@@ -16,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -121,9 +117,22 @@ public class CalculationsHistory {
 				c = c.reversed();
 			}
 			calculationsSorted.sort(c);
+			System.out.println(
+					String.format(
+							"Sorted by result %s.",
+							(reverse)?"descending" : "ascending"
+					)
+			);
+			int tab = this.getLargestExpression().length();
 			for (int i = 0; i < calculationsSorted.size(); i++) {
 				Calculation cs = calculationsSorted.get(i);
-				System.out.println(cs.getResult()+" = " +cs.getOperation());
+				String output = String.format( "(%s)  %-"+tab+"s = %s",
+						this.makeDateString(cs.getDate()),
+						cs.getOperation(),
+						cs.getResult()
+
+				);
+				System.out.println(output);
 			}
 			
 		}
@@ -132,6 +141,7 @@ public class CalculationsHistory {
 	 * Print ordered by the date of calculation.
 	 */
 	public void printOrderedByDate(){
+		System.out.println("Sorted by date.");
 		if(calculations.size() > 0){
 			calculationsSorted = (ArrayList)calculations.clone();
 			calculationsSorted.sort((t, t1) -> {
@@ -139,8 +149,16 @@ public class CalculationsHistory {
 				LocalDateTime b = LocalDateTime.parse(t1.getDate());
 				return a.compareTo(b);
 			});
-			for (Calculation cs : calculationsSorted) {
-				System.out.println(cs.getDate()+ "    "+ cs.getOperation()+" = " +cs.getResult());
+			int tab = this.getLargestExpression().length();
+			for (int i = 0; i < calculationsSorted.size(); i++) {
+				Calculation cs = calculationsSorted.get(i);
+				String output = String.format( "(%s)  %-"+tab+"s = %s",
+						this.makeDateString(cs.getDate()),
+						cs.getOperation(),
+						cs.getResult()
+
+				);
+				System.out.println(output);
 			}
 			
 		}
@@ -215,5 +233,32 @@ public class CalculationsHistory {
 	 */
 	public ArrayList<Calculation> getCalculations() {
 		return calculations;
+	}
+	/**
+	 * Get the largest expression.
+	 * @return  The largest expression in the history.
+	 */
+	private String getLargestExpression(){
+		String largest = calculations.get(0).getOperation();
+		for (Calculation calculation : calculations) {
+			if(calculation.getOperation().length() >= largest.length()){
+				largest = calculation.getOperation();
+			}
+		}
+		return largest;
+	
+	}
+	/**
+	 * Creates a string to represent a date.
+	 * @param localdate A string from a LocalDateTime.
+	 * @return  A date string in printable format.
+	 */
+	private String makeDateString(String localdate){
+		return LocalDateTime.parse(localdate).format(
+				DateTimeFormatter.ofPattern(
+						"dd MMM yyyy HH:MM:ss.SSS"
+				)
+		);
+	
 	}
 }

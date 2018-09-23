@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cli;
 
 import java.nio.file.Files;
@@ -30,6 +25,7 @@ public class CLI {
 	 * Initializes the interactive mode to read the standard input.
 	 */
 	private static void startInteractiveMode() {
+		printBanner();
 		String prompt = ">>> ";
 		Scanner sc = new Scanner(System.in);
 	    for(;;){
@@ -47,8 +43,10 @@ public class CLI {
 				String[] fileNames = line.split("\\s");
 				if (fileNames.length > 0) {
 					for (int i = 1; i < fileNames.length; i++) {
-						if (Files.exists(Paths.get(fileNames[i]) )){
-							rpnc.processFile(fileNames[i]);
+						String url = fileNames[i];
+						url = url.replaceFirst("^~", System.getProperty("user.home"));
+						if (Files.exists(Paths.get(url))){
+							rpnc.processFile(url);
 						} else{
 							System.err.println("File specified deos not exists, provide a valid file path.");
 						}
@@ -200,6 +198,26 @@ public class CLI {
 			}
 		}
 	
+	}
+	/**
+	 * Prints the application banner.
+	 */
+	public static void printBanner(){
+		String ls = System.lineSeparator();
+		String banner =
+				"*********************************************************************************"+ls+
+				"*         ___    ___    _  __  _____                                            *"+ls+
+				"*        / _ \\  / _ \\  / |/ / / ___/                                            *"+ls+
+				"*       / , _/ / ___/ /    / / /__                                              *"+ls+
+				"*      /_/|_| /_/    /_/|_/  \\___/                                              *"+ls+
+				"*                                                                               *"+ls+
+				"*                              Reverse Polish Notation Calculator               *"+ls+
+				"*                              by: J. Garcia, u0x004a at gmail.com              *"+ls+
+				"*                                                                               *"+ls+
+				"*********************************************************************************"+ls+
+				"Please enter a RPN expression or command, enter h or help to see commands." + ls;
+
+		System.out.println(banner);
 	}
 	/**
 	 * Main method.
