@@ -30,6 +30,11 @@ public class CalculationsHistory {
 	ArrayList<Calculation> calculationsSorted = null;
 	Path logFile = null;
 	String separator = ":::";
+
+	public CalculationsHistory() {
+		this.calculations = new ArrayList<>();
+	}
+	
 	/**
 	 * Load the history.
 	 * Search for rpnc-history.log in current directory and user's home.
@@ -75,7 +80,7 @@ public class CalculationsHistory {
 		 * Compares the Result of two Calculation.
 		 * @param t The calculation a.
 		 * @param t1 The calculation b
-		 * @return 
+		 * @return  1, 0, or -1, according to a greater, equal or less than b.
 		 */
 		@Override
 		public int compare(Calculation t, Calculation t1) {
@@ -104,36 +109,41 @@ public class CalculationsHistory {
 	 * @param reverse  If set to true reverse order will be used.
 	 */
 	public void printOrderedByResult( boolean reverse){
-		calculationsSorted = new ArrayList<>();
-		for (Calculation calculation : calculations) {
-			if(calculation.getResult().compareTo("Error") != 0 ){
-				calculationsSorted.add(calculation);
+		if(calculations.size() > 0 ){
+			calculationsSorted = new ArrayList<>();
+			for (Calculation calculation : calculations) {
+				if(calculation.getResult().compareTo("Error") != 0 ){
+					calculationsSorted.add(calculation);
+				}
 			}
-		}
-		Comparator c = new BigDecimalComparator();
-		if (reverse) {
-			c = c.reversed();
-		}
-		calculationsSorted.sort(c);
-		for (int i = 0; i < calculationsSorted.size(); i++) {
-			Calculation cs = calculationsSorted.get(i);
-			System.out.println(cs.getResult()+" = " +cs.getOperation());
+			Comparator c = new BigDecimalComparator();
+			if (reverse) {
+				c = c.reversed();
+			}
+			calculationsSorted.sort(c);
+			for (int i = 0; i < calculationsSorted.size(); i++) {
+				Calculation cs = calculationsSorted.get(i);
+				System.out.println(cs.getResult()+" = " +cs.getOperation());
+			}
+			
 		}
 	}
 	/**
 	 * Print ordered by the date of calculation.
 	 */
 	public void printOrderedByDate(){
-		calculationsSorted = (ArrayList)calculations.clone();
-		calculationsSorted.sort((t, t1) -> {
-			LocalDateTime a = LocalDateTime.parse(t.getDate());
-			LocalDateTime b = LocalDateTime.parse(t1.getDate());
-			return a.compareTo(b); 
-		});
-		for (Calculation cs : calculationsSorted) {
-			System.out.println(cs.getDate()+ "    "+ cs.getOperation()+" = " +cs.getResult());
+		if(calculations.size() > 0){
+			calculationsSorted = (ArrayList)calculations.clone();
+			calculationsSorted.sort((t, t1) -> {
+				LocalDateTime a = LocalDateTime.parse(t.getDate());
+				LocalDateTime b = LocalDateTime.parse(t1.getDate());
+				return a.compareTo(b);
+			});
+			for (Calculation cs : calculationsSorted) {
+				System.out.println(cs.getDate()+ "    "+ cs.getOperation()+" = " +cs.getResult());
+			}
+			
 		}
-	
 	}
 
 	/**
@@ -180,6 +190,7 @@ public class CalculationsHistory {
 	 * @param c  Calculation to log.
 	 */
 	public void log( Calculation c ){
+		this.calculations.add(c);
 		try {
 			String output = "";
 			output += c.getDate();
@@ -196,5 +207,13 @@ public class CalculationsHistory {
 		} catch (IOException ex) {
 			System.err.println("Could not write to file: " + logFile);
 		}
+	}
+
+	/**
+	 * Get the calculations in the history.
+	 * @return  The calculations in the history.
+	 */
+	public ArrayList<Calculation> getCalculations() {
+		return calculations;
 	}
 }

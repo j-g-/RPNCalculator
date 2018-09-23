@@ -5,13 +5,16 @@
  */
 package cli;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import rpncalculator.RPNCalculator;
 
 /**
- *
+ * Command line interface. 
+ * Takes arguments or enters an interactive mode.
  * @author J. Garcia, jyo.garcia at gmail.com
  */
 public class CLI {
@@ -34,11 +37,27 @@ public class CLI {
 			System.out.print(prompt);
 			String line = sc.nextLine();
 			if (line.matches("h|help")){
-					printHelp();
+				//Show help
+				printHelp();
 			} else if (line.matches("exit|quit|q")){
-					System.exit(0);
+				// Exit program
+				System.exit(0);
+			} else if (line.matches("file .*|load .*|f .*|l .*")){
+				// Process files
+				String[] fileNames = line.split("\\s");
+				if (fileNames.length > 0) {
+					for (int i = 1; i < fileNames.length; i++) {
+						if (Files.exists(Paths.get(fileNames[i]) )){
+							rpnc.processFile(fileNames[i]);
+						} else{
+							System.err.println("File specified deos not exists, provide a valid file path.");
+						}
+					}
+				} else {
+					System.err.println("No file specified, please, provide a file path.");
+				}
 			} else if (line.matches("history.*|hist.*")){
-				//Matcher m = 	
+				// Show history
 				Pattern p =  Pattern.compile("(?:^.*)(history|hist)(?:\\s*)(?<opt>r.*|d.*)*(?:$)");
 				Matcher m = p.matcher(line);
 				String opt = "";
@@ -93,9 +112,12 @@ public class CLI {
 	 * Prints the help for this program.
 	 */
 	private static void printHelp() {
+		String ls = System.lineSeparator();
 		String[][] commands = {
 			{"help", "Prints this help."},
 			{"quit/exit", "Exit program."},
+			{"file|f fileNames...", ""},
+			{"load|l fileNames...", "Process the files containing RPN expressions."},
 			{"history [r|d]", "Show history. r = reverse result, d = date"}
 		};
 		String[][] args = {
@@ -109,42 +131,42 @@ public class CLI {
 			{"[file]", "File to parse"}
 		};
 		String help = "";
-		help += "********************************************************************************" + System.lineSeparator();
-		help += "Arguments" + System.lineSeparator();
-		help += "********************************************************************************" + System.lineSeparator();
-		help += "\t java -jar RPNCalculator.jar [[options]|[file]] "+ System.lineSeparator();
-		help += "Options:"+ System.lineSeparator();
+		help += "********************************************************************************" + ls;
+		help += "Arguments" + ls;
+		help += "********************************************************************************" + ls;
+		help += "\t java -jar RPNCalculator.jar [[options]|[file]] "+ ls;
+		help += "Options:"+ ls;
 		for (String []arg : args){
 			help += String.format("\t%-24s%s",arg[0], arg[1]) + 
-					System.lineSeparator();
+					ls;
 		}
 
-		help += System.lineSeparator();
-		help += System.lineSeparator();
-		help += "********************************************************************************" + System.lineSeparator();
-		help += "Interactive mode commands" + System.lineSeparator();
-		help += "********************************************************************************" + System.lineSeparator();
+		help += ls;
+		help += ls;
+		help += "********************************************************************************" + ls;
+		help += "Interactive mode commands" + ls;
+		help += "********************************************************************************" + ls;
 
 		for (String []command : commands){
-			help += String.format("\t%-16s%s",command[0], command[1]) + 
-					System.lineSeparator();
+			help += String.format("\t%-24s%s",command[0], command[1]) + 
+					ls;
 		}
-		help += System.lineSeparator();
-		help += System.lineSeparator();
-		help += "********************************************************************************" + System.lineSeparator();
-		help += "Expresions" + System.lineSeparator();
-		help += "********************************************************************************" + System.lineSeparator();
-		help += "\tEvaluates expresions of the form:"+ System.lineSeparator();
+		help += ls;
+		help += ls;
+		help += "********************************************************************************" + ls;
+		help += "Expresions" + ls;
+		help += "********************************************************************************" + ls;
+		help += "\tEvaluates expresions of the form:"+ ls;
 		help += "\t\tnum1 num2  num3 ... operator1 operator2 ..." +
-				System.lineSeparator();
-		help += "\tExample:" + System.lineSeparator();
+				ls;
+		help += "\tExample:" + ls;
 		help += "\t\t1 2 3 ... PLUS TIMES ..." +
-				System.lineSeparator() ;
-		help += "\tOperators:" + System.lineSeparator();
-		help += "\t\tPLUS or +" + System.lineSeparator() ;
-		help += "\t\tLESS or -" + System.lineSeparator() ;
-		help += "\t\tTIMES or * x" + System.lineSeparator() ;
-		help += "\t\tDIV or /" + System.lineSeparator() ;
+				ls ;
+		help += "\tOperators:" + ls;
+		help += "\t\tPLUS or +" + ls ;
+		help += "\t\tLESS or -" + ls ;
+		help += "\t\tTIMES or * x" + ls ;
+		help += "\t\tDIV or /" + ls ;
 		System.out.println(help);
 	}
 
