@@ -128,7 +128,7 @@ public class CalculationsHistory {
 		calculationsSorted.sort((t, t1) -> {
 			LocalDateTime a = LocalDateTime.parse(t.getDate());
 			LocalDateTime b = LocalDateTime.parse(t1.getDate());
-			return a.compareTo(b); //To change body of generated lambdas, choose Tools | Templates.
+			return a.compareTo(b); 
 		});
 		for (Calculation cs : calculationsSorted) {
 			System.out.println(cs.getDate()+ "    "+ cs.getOperation()+" = " +cs.getResult());
