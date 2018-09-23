@@ -40,14 +40,36 @@ Interactive Commands
 
 ### help
   Shows the help.
+  ```
+	>>> help
+	>>> h
+  ```
 ### file or load
   Load a list of files. 
   For example:
   ```
-	file filename1.rpn filename2.rpn ...
-	f filename1.rpn filename2.rpn ...
-	load filename1.rpn filename2.rpn ...
-	l filename1.rpn filename2.rpn ...
+	>>> file filename1.rpn filename2.rpn ...
+	>>> f filename1.rpn filename2.rpn ...
+	>>> load filename1.rpn filename2.rpn ...
+	>>> l filename1.rpn filename2.rpn ...
   ```
-	
+### history 
+  Load a list of files.
+  By result ascending:
+  ```
+    >>> history ordered
+    >>> history o
+    >>> history
+  ```
+  By result descending:
+  ```
+    >>> history reverse
+    >>> history r
+  ```
+  By date:
+  ```
+    >>> history date
+    >>> history d
+  ```
+
   
