@@ -2,8 +2,8 @@ Reverse Polish Notation (RPN) Calculator
 ========================================
 
 * This program contains a command-line utility to operate RPN expressions.
+	For example:
   ```
-  For example:
         1 1 5 PLUS PLUS =  7
         9 2 7 PLUS TIMES = 81
   ```
@@ -14,8 +14,8 @@ Reverse Polish Notation (RPN) Calculator
 * Keeps history of calculations and can print history sorted by result, 
     result in reverse and date.
 
-Usage
------
+Arguments
+---------
 Execute jar file passing options as arguments or a file name.
 
 ### Reading a file:
@@ -35,3 +35,19 @@ Execute jar file passing options as arguments or a file name.
     java -jar RPNCalculator.jar --history=date
 
 
+Interactive Commands
+--------------------
+
+### help
+  Shows the help.
+### file or load
+  Load a list of files. 
+  For example:
+  ```
+	file filename1.rpn filename2.rpn ...
+	f filename1.rpn filename2.rpn ...
+	load filename1.rpn filename2.rpn ...
+	l filename1.rpn filename2.rpn ...
+  ```
+	
+  
