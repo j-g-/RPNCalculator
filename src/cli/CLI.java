@@ -13,13 +13,36 @@ import rpncalculator.RPNCalculator;
  * @author J. Garcia, jyo.garcia at gmail.com
  */
 public class CLI {
+	/**
+	 * The instance of the calculator.
+	 */
 	static RPNCalculator rpnc  = RPNCalculator.getInstance();
+	/**
+	 * Show help selection from arguments.
+	 */
 	public static boolean showHelp = false;
+	/**
+	 * Show the history selection from arguments.
+	 */
 	public static boolean showHistory = false;
-	public static String historyMode = "normal";
+	/**
+	 * The history mode. 
+	 * Result, result reverse or date,
+	 */
+	public static String historyMode = "o";
+	
+	/**
+	 * File was given in arguments. 
+	 */
 	public static boolean parseFile = false;
+	/**
+	 * Selection of interactive mode.
+	 */
 	public static boolean interactiveMode = false;
-	public static String fileToParse = "normal";
+	/**
+	 * File to parse expressions from.
+	 */
+	public static String fileToParse = "";
 
 	/**
 	 * Initializes the interactive mode to read the standard input.
